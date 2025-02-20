@@ -1,17 +1,20 @@
+import { Background } from '@/routes/game/components/Background';
 import { Header } from '@/routes/game/components/Header';
-import { MainContent } from '@/routes/game/components/MainContent';
-import { PickPositionButton } from '@/routes/game/components/PickPositionButton';
 import { useGameState } from '@/state/gameState';
 import { PHASES } from '@/state/gameState.utils';
-import { useTotalBets } from '@/state/useTotalBets';
-import { HANDS } from '@/utils/types';
-import { Button, HStack, Text } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { useEffect } from 'react';
+import { PickPositionsText } from './components/PickPositionsText';
+import { PlayButton } from './components/PlayButton';
+import { PositionsSelector } from './components/PositionsSelector';
+import { SelectedHands } from './components/SelectedHands';
 
 export function Game() {
     const phase = useGameState((state) => state.phase);
     const startGame = useGameState((state) => state.startGame);
-    const playRound = useGameState((state) => state.playRound);
+    const resetRound = useGameState((state) => state.resetRound);
+    const roundStarted = phase === PHASES.ROUND_STARTED;
+    const roundEnded = phase === PHASES.ROUND_ENDED;
 
     useEffect(() => {
         if (phase === PHASES.INITIAL) {
@@ -19,35 +22,28 @@ export function Game() {
         }
     }, [phase, startGame]);
 
-    const totalBets = useTotalBets();
+    useEffect(() => {
+        if (roundEnded) {
+            const timer = setTimeout(() => {
+                resetRound();
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [roundEnded, resetRound]);
 
     return (
-        <>
+        <Background>
             <Header />
-            <MainContent>
-                <Text fontSize="lg" mb={4} color="primary" fontWeight="bold">
-                    PICK YOUR POSITIONS
-                </Text>
-                <HStack gap={6}>
-                    <PickPositionButton label="ROCK" colorPalette="blue" hand={HANDS.ROCK} />
-                    <PickPositionButton label="PAPER" colorPalette="green" hand={HANDS.PAPER} />
-                    <PickPositionButton label="SCISSORS" colorPalette="red" hand={HANDS.SCISSORS} />
-                </HStack>
-                <Button
-                    mt={6}
-                    borderColor="primary"
-                    size="2xl"
-                    color="primary"
-                    bg="almostBlack"
-                    rounded="full"
-                    w="150px"
-                    onClick={playRound}
-                    disabled={totalBets === 0}
-                    title={totalBets === 0 ? 'Place your bets first' : ''}
-                >
-                    PLAY
-                </Button>
-            </MainContent>
-        </>
+            <VStack h="full" w="full">
+                <VStack flex={1} justifyContent="center">
+                    {roundEnded && <SelectedHands />}
+                </VStack>
+                <VStack gap={6} pb={8}>
+                    {roundStarted && <PickPositionsText />}
+                    <PositionsSelector />
+                    <PlayButton />
+                </VStack>
+            </VStack>
+        </Background>
     );
 }

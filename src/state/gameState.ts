@@ -11,6 +11,7 @@ interface GameState {
     computerHand: Hand | null;
     startGame: () => void;
     playRound: () => void;
+    resetRound: () => void;
     increaseBalance: (by: number) => void;
     decreaseBalance: (by: number) => void;
     increaseWinAmount: (by: number) => void;
@@ -41,7 +42,7 @@ export const useGameState = create<GameState>((set, get) => ({
                 [HANDS.SCISSORS]: []
             },
             computerHand: null,
-            phase: PHASES.STARTED
+            phase: PHASES.ROUND_STARTED
         }),
     playRound: () =>
         set((state) => {
@@ -72,7 +73,7 @@ export const useGameState = create<GameState>((set, get) => ({
             });
 
             return {
-                phase: PHASES.PLAYING,
+                phase: PHASES.ROUND_ENDED,
                 currentBets: {
                     [HANDS.ROCK]: [],
                     [HANDS.PAPER]: [],
@@ -81,6 +82,17 @@ export const useGameState = create<GameState>((set, get) => ({
                 computerHand: null
             };
         }),
+
+    resetRound: () =>
+        set(() => ({
+            phase: PHASES.ROUND_STARTED,
+            computerHand: null,
+            currentBets: {
+                [HANDS.ROCK]: [],
+                [HANDS.PAPER]: [],
+                [HANDS.SCISSORS]: []
+            }
+        })),
     increaseBalance: (by: number) => set((state) => ({ balance: state.balance + by })),
     decreaseBalance: (by: number) => set((state) => ({ balance: state.balance - by })),
     increaseWinAmount: (by: number) => set((state) => ({ winAmount: state.winAmount + by })),

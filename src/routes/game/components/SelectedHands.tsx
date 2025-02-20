@@ -5,11 +5,18 @@ import { Flex, Text } from '@chakra-ui/react';
 export const SelectedHands = () => {
     const computerHand = HANDS.PAPER;
     const playerHand = HANDS.ROCK;
+
     return (
-        <Flex gap={6} alignItems="center" justifyContent="center">
-            <Text>Selected Hands</Text>
-            <Text>{computerHand}</Text>
-            <Text>{playerHand}</Text>
+        <Flex gap={10} alignItems="baseline" w="full">
+            <Text fontSize="6xl" fontWeight="bold" color="white" flex={1} textAlign="right">
+                {computerHand}
+            </Text>
+            <Text fontSize="4xl" fontWeight="bold" color="primary" flex={0.5} textAlign="center">
+                VS
+            </Text>
+            <Text fontSize="6xl" fontWeight="bold" color="white" flex={1} textAlign="left">
+                {playerHand}
+            </Text>
         </Flex>
     );
 };

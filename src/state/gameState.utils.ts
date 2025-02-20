@@ -2,9 +2,10 @@ import { Hand, HANDS } from '@/utils/types';
 
 export const PHASES = {
     INITIAL: 'INITIAL',
-    STARTED: 'STARTED',
-    PLAYING: 'PLAYING',
-    ENDED: 'ENDED'
+    ROUND_STARTED: 'ROUND_STARTED',
+    ROUND_THINKING: 'ROUND_THINKING',
+    ROUND_ENDED: 'ROUND_ENDED',
+    GAME_OVER: 'GAME_OVER'
 } as const;
 
 export type Phase = (typeof PHASES)[keyof typeof PHASES];
