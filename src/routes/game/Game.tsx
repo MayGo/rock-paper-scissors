@@ -1,6 +1,6 @@
-import { Header } from '@/routes/game/Header';
-import { MainContent } from '@/routes/game/MainContent';
-import { PickPositionButton } from '@/routes/game/PickPositionButton';
+import { Header } from '@/routes/game/components/Header';
+import { MainContent } from '@/routes/game/components/MainContent';
+import { PickPositionButton } from '@/routes/game/components/PickPositionButton';
 import { useGameState } from '@/state/gameState';
 import { PHASES } from '@/state/gameState.utils';
 import { useTotalBets } from '@/state/useTotalBets';

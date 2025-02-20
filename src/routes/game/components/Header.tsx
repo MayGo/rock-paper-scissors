@@ -1,6 +1,6 @@
+import { useGameState } from '@/state/gameState';
 import { useTotalBets } from '@/state/useTotalBets';
 import { Flex } from '@chakra-ui/react';
-import { useGameState } from '../../state/gameState';
 import { HeaderItem } from './HeaderItem';
 
 export const Header = () => {

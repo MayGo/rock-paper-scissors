@@ -3,10 +3,10 @@ import { IconButton, Text, VStack } from '@chakra-ui/react';
 import { useGameState } from '@/state/gameState';
 import { sumChips } from '@/state/gameState.utils';
 import { CHIP_VALUE } from '@/utils/constants';
+import { Hand } from '@/utils/types';
 import { Button } from '@chakra-ui/react';
 import { useState } from 'react';
 import { AiOutlineClear } from 'react-icons/ai';
-import { Hand } from '../../utils/types';
 
 export const PickPositionButton = ({
     label,

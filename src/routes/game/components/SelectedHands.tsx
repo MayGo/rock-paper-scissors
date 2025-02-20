@@ -1,4 +1,4 @@
-import { HANDS } from '../../utils/types';
+import { HANDS } from '@/utils/types';
 
 import { Flex, Text } from '@chakra-ui/react';
 
