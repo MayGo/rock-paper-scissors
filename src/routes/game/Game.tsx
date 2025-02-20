@@ -21,7 +21,7 @@ export function Game() {
     const roundResults = phase === PHASES.ROUND_RESULTS;
     const roundCashed = phase === PHASES.ROUND_CASHED;
 
-    const roundEnded = roundResults || roundCashed;
+    const roundEnded = roundCashed;
 
     useEffect(() => {
         if (phase === PHASES.INITIAL) {

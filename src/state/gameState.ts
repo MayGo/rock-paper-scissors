@@ -25,8 +25,8 @@ interface GameState {
     clearBet: (bet: Hand) => void;
 }
 
-const THINKING_TIME = 2000;
-const WAIT_UNTIL_RESET = 3000;
+const THINKING_TIME = 1000;
+const WAIT_UNTIL_RESET = 2000;
 const MAX_BETS = 2;
 
 export const useGameState = create<GameState>((set, get) => ({
@@ -122,11 +122,15 @@ export const useGameState = create<GameState>((set, get) => ({
             };
         }),
     clearBet: (bet: Hand) =>
-        set((state) => ({
-            balance: state.balance + sumChips(state.currentBets[bet]),
-            currentBets: {
-                ...state.currentBets,
-                [bet]: []
-            }
-        }))
+        set((state) => {
+            if (state.phase !== PHASES.ROUND_STARTED) return state;
+
+            return {
+                balance: state.balance + sumChips(state.currentBets[bet]),
+                currentBets: {
+                    ...state.currentBets,
+                    [bet]: []
+                }
+            };
+        })
 }));

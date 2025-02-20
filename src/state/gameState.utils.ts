@@ -16,8 +16,11 @@ export type Phase = (typeof PHASES)[keyof typeof PHASES];
 export const sumChips = (chips: number[]) => chips.reduce((acc, curr) => acc + curr, 0);
 
 export const getRandomHand = () => {
+    // Use crypto.getRandomValues() for better randomization
     const hands = Object.values(HANDS);
-    return hands[Math.floor(Math.random() * hands.length)];
+    const array = new Uint32Array(1);
+    crypto.getRandomValues(array);
+    return hands[array[0] % hands.length];
 };
 
 export const didPlayerWin = (userHand: Hand | null, computerHand: Hand | null) => {
@@ -66,7 +69,7 @@ export const getPlayerRoundResult = (currentBets: CurrentBets, computerHand: Han
     if (betsWithValue.length === 0) return { amount: 0, bestHand: null, playerWon: false };
     const result = {
         amount: 0,
-        bestHand: betsWithValue[0].hand,
+        bestHand: null as Hand | null,
         playerWon: false
     };
 
@@ -88,5 +91,9 @@ export const getPlayerRoundResult = (currentBets: CurrentBets, computerHand: Han
             result.playerWon = true;
         }
     });
+
+    if (result.bestHand === null) {
+        result.bestHand = betsWithValue[0].hand;
+    }
     return result;
 };
