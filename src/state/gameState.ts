@@ -2,28 +2,8 @@ import { START_BALANCE } from '@/utils/constants';
 import { showMaxBetsReachedMessage } from '@/utils/messages';
 import { create } from 'zustand';
 import { Hand, HANDS } from '../utils/types';
-import { getBetsWithValues, getPlayerRoundResult, getRandomHand, Phase, PHASES, sumChips } from './gameState.utils';
-
-type CurrentBets = {
-    [key in Hand]: number[];
-};
-
-interface GameState {
-    balance: number;
-    winCount: number;
-    currentBets: CurrentBets;
-    phase: Phase;
-    computerHand: Hand | null;
-    playerHand: Hand | null;
-    startGame: () => void;
-    playRound: () => void;
-    resetRound: () => void;
-    increaseBalance: (by: number) => void;
-    decreaseBalance: (by: number) => void;
-    incrementWinCount: () => void;
-    addBet: (bet: Hand, amount: number) => void;
-    clearBet: (bet: Hand) => void;
-}
+import { GameState, Phase, PHASES } from './gameState.types';
+import { getBetsWithValues, getPlayerRoundResult, getRandomHand, sumChips } from './gameState.utils';
 
 const THINKING_TIME = 1000;
 const WAIT_UNTIL_RESET = 2000;
@@ -41,8 +21,8 @@ export const useGameState = create<GameState>((set, get) => ({
         [HANDS.SCISSORS]: [] as number[]
     },
     phase: PHASES.INITIAL as Phase,
-    computerHand: null as Hand | null,
-    playerHand: null as Hand | null,
+    computerHand: undefined,
+    playerHand: undefined,
     startGame: () =>
         set({
             balance: START_BALANCE,
@@ -52,8 +32,8 @@ export const useGameState = create<GameState>((set, get) => ({
                 [HANDS.PAPER]: [],
                 [HANDS.SCISSORS]: []
             },
-            computerHand: null,
-            playerHand: null,
+            computerHand: undefined,
+            playerHand: undefined,
             phase: PHASES.ROUND_STARTED
         }),
     playRound: () => {
@@ -89,8 +69,8 @@ export const useGameState = create<GameState>((set, get) => ({
     resetRound: () =>
         set(() => ({
             phase: PHASES.ROUND_STARTED,
-            computerHand: null,
-            playerHand: null,
+            computerHand: undefined,
+            playerHand: undefined,
             currentBets: {
                 [HANDS.ROCK]: [],
                 [HANDS.PAPER]: [],

@@ -11,7 +11,7 @@ const greenColor = '#19c359';
 const greenDarkColor = '#1a381d';
 const blueColor = '#3b81f6';
 const blueDarkColor = '#201f4f';
-const redColor = '#ef4444';
+const redColor = '#e11542';
 const redDarkColor = '#50091e';
 
 const chipBlue = '#235eff';

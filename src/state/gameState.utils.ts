@@ -2,17 +2,6 @@ import { WIN_RATE_1_POSITION, WIN_RATE_2_POSITIONS } from '@/utils/constants';
 import { Hand, HANDS } from '@/utils/types';
 import { CurrentBets } from './gameState.types';
 
-export const PHASES = {
-    INITIAL: 'INITIAL',
-    ROUND_STARTED: 'ROUND_STARTED',
-    ROUND_THINKING: 'ROUND_THINKING',
-    ROUND_RESULTS: 'ROUND_RESULTS',
-    ROUND_CASHED: 'ROUND_CASHED',
-    GAME_OVER: 'GAME_OVER'
-} as const;
-
-export type Phase = (typeof PHASES)[keyof typeof PHASES];
-
 export const sumChips = (chips: number[]) => chips.reduce((acc, curr) => acc + curr, 0);
 
 export const getRandomHand = () => {
@@ -23,23 +12,23 @@ export const getRandomHand = () => {
     return hands[array[0] % hands.length];
 };
 
-export const didPlayerWin = (userHand: Hand | null, computerHand: Hand | null) => {
-    if (!userHand || !computerHand) return false;
-    if (userHand === computerHand) return false;
-    if (userHand === HANDS.ROCK && computerHand === HANDS.SCISSORS) return true;
-    if (userHand === HANDS.SCISSORS && computerHand === HANDS.PAPER) return true;
-    if (userHand === HANDS.PAPER && computerHand === HANDS.ROCK) return true;
+export const didPlayerWin = (playerHand?: Hand, computerHand?: Hand) => {
+    if (!playerHand || !computerHand) return false;
+    if (playerHand === computerHand) return false;
+    if (playerHand === HANDS.ROCK && computerHand === HANDS.SCISSORS) return true;
+    if (playerHand === HANDS.SCISSORS && computerHand === HANDS.PAPER) return true;
+    if (playerHand === HANDS.PAPER && computerHand === HANDS.ROCK) return true;
     return false;
 };
 
-export const getWinningHand = (userHand: Hand | null, computerHand: Hand | null) => {
-    if (!userHand || !computerHand) return null;
-    if (userHand === computerHand) return null;
-    if (didPlayerWin(userHand, computerHand)) return userHand;
+export const getWinningHand = (playerHand?: Hand, computerHand?: Hand) => {
+    if (!playerHand || !computerHand) return null;
+    if (playerHand === computerHand) return null;
+    if (didPlayerWin(playerHand, computerHand)) return playerHand;
     return computerHand;
 };
 
-export const getPlayerWinningHand = (userHand: Hand | null, computerHand: Hand | null) => {
+export const getPlayerWinningHand = (userHand?: Hand, computerHand?: Hand) => {
     if (!userHand || !computerHand) return null;
     if (userHand === computerHand) return null;
     if (didPlayerWin(userHand, computerHand)) return userHand;
@@ -63,13 +52,19 @@ export const getBetsWithValues = (bets: { [key in Hand]: number[] }) => {
         );
 };
 
+type PlayerRoundResult = {
+    amount: number;
+    bestHand?: Hand;
+    playerWon: boolean;
+};
+
 export const getPlayerRoundResult = (currentBets: CurrentBets, computerHand: Hand) => {
     const betsWithValue = getBetsWithValues(currentBets);
 
-    if (betsWithValue.length === 0) return { amount: 0, bestHand: null, playerWon: false };
-    const result = {
+    if (betsWithValue.length === 0) return { amount: 0, bestHand: undefined, playerWon: false };
+    const result: PlayerRoundResult = {
         amount: 0,
-        bestHand: null as Hand | null,
+        bestHand: undefined,
         playerWon: false
     };
 

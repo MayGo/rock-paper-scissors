@@ -1,7 +1,7 @@
 import { useGameState } from '@/state/gameState';
-import { PHASES } from '@/state/gameState.utils';
+import { PHASES } from '@/state/gameState.types';
 import { useTotalBets } from '@/state/useTotalBets';
-import { Button } from '@chakra-ui/react';
+import { ActionButton } from './ActionButton';
 
 export const PlayButton = () => {
     const playRound = useGameState((state) => state.playRound);
@@ -10,19 +10,11 @@ export const PlayButton = () => {
     const totalBets = useTotalBets();
 
     return (
-        <Button
-            mt={6}
-            borderColor="primary"
-            size="2xl"
-            color="primary"
-            bg="almostBlack"
-            rounded="full"
-            w="150px"
+        <ActionButton
+            label="PLAY"
             onClick={playRound}
             disabled={!roundStarted || totalBets === 0}
             title={totalBets === 0 ? 'Place your bets first' : ''}
-        >
-            PLAY
-        </Button>
+        />
     );
 };

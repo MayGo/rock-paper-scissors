@@ -1,7 +1,7 @@
 import { Background } from '@/routes/game/components/Background';
 import { Header } from '@/routes/game/components/Header';
 import { useGameState } from '@/state/gameState';
-import { PHASES } from '@/state/gameState.utils';
+import { PHASES } from '@/state/gameState.types';
 import { VStack } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { ClearButton } from './components/ClearButton';
@@ -38,9 +38,11 @@ export function Game() {
                     {roundThinking && <ThinkingText />}
                     {roundCashed && <RoundCashed />}
                 </VStack>
-                <VStack gap={6} pb={8}>
-                    {roundStarted && <PickPositionsText />}
-                    <PositionsSelector />
+                <VStack gap={16} pb={14}>
+                    <VStack gap={2}>
+                        {roundStarted && <PickPositionsText />}
+                        <PositionsSelector />
+                    </VStack>
                     {!roundEnded && <PlayButton />}
                     {roundEnded && <ClearButton />}
                 </VStack>

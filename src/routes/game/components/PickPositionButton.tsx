@@ -33,24 +33,23 @@ export const PickPositionButton = ({ label, color, hand }: Props) => {
     return (
         <Button
             bg={`${color}.950`}
-            borderColor={`${color}.500`}
+            borderWidth={highlight ? 4 : 2}
+            borderColor={highlight ? `${color}.500` : `${color}.800`}
             color={`${color}.500`}
-            size="lg"
-            w="220px"
-            h="180px"
-            borderWidth={2}
+            w="200px"
+            h="160px"
             rounded="lg"
             onClick={() => {
                 addBet(hand, CHIP_VALUE);
             }}
-            py={8}
+            py={6}
             px={0}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            border={highlight ? `4px solid` : `2px solid `}
         >
             {totalBet > 0 && isHovered && (
                 <IconButton
+                    as="div"
                     position="absolute"
                     top={2}
                     right={2}
@@ -66,10 +65,10 @@ export const PickPositionButton = ({ label, color, hand }: Props) => {
                     <AiOutlineClear />
                 </IconButton>
             )}
-            <VStack gap={8} alignItems="center" justifyContent="space-between" h="full" w="full">
+            <VStack gap={4} alignItems="center" justifyContent="space-between" h="full" w="full">
                 <HStack overflow="hidden" w="full" h="full" justifyContent="center" alignItems="center">
-                    {currentBet.map((bet) => (
-                        <Box key={bet} w="6px" justifyItems="center">
+                    {currentBet.map((bet, index) => (
+                        <Box key={index} w="6px" justifyItems="center">
                             <CoinChip value={bet} />
                         </Box>
                     ))}

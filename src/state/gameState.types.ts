@@ -1,5 +1,15 @@
 import { Hand } from '../utils/types';
-import { Phase } from './gameState.utils';
+
+export const PHASES = {
+    INITIAL: 'INITIAL',
+    ROUND_STARTED: 'ROUND_STARTED',
+    ROUND_THINKING: 'ROUND_THINKING',
+    ROUND_RESULTS: 'ROUND_RESULTS',
+    ROUND_CASHED: 'ROUND_CASHED',
+    GAME_OVER: 'GAME_OVER'
+} as const;
+
+export type Phase = (typeof PHASES)[keyof typeof PHASES];
 
 export type CurrentBets = {
     [key in Hand]: number[];
@@ -10,8 +20,8 @@ export interface GameState {
     winCount: number;
     currentBets: CurrentBets;
     phase: Phase;
-    computerHand: Hand | null;
-    playerHand: Hand | null;
+    computerHand?: Hand;
+    playerHand?: Hand;
     startGame: () => void;
     playRound: () => void;
     resetRound: () => void;
