@@ -44,35 +44,36 @@ export const useGameState = create<GameState>((set, get) => ({
             computerHand: null,
             phase: PHASES.ROUND_STARTED
         }),
-    playRound: () =>
-        set((state) => {
-            const totalBets = Object.values(state.currentBets).reduce((sum, bet) => sum + sumChips(bet), 0);
-            if (totalBets === 0) return state;
+    playRound: () => {
+        set({ phase: PHASES.ROUND_THINKING }); // Set phase to ROUND_THINKING
 
-            const computerHand = getRandomHand();
+        const totalBets = Object.values(get().currentBets).reduce((sum, bet) => sum + sumChips(bet), 0);
+        if (totalBets === 0) return;
 
-            console.log('computerHand....', computerHand);
+        const computerHand = getRandomHand();
+        console.log('computerHand....', computerHand);
 
-            const betsWithValue = Object.entries(state.currentBets)
-                .filter(([, chips]) => sumChips(chips) > 0)
-                .map(([hand, chips]) => ({
-                    hand: hand as Hand,
-                    amount: sumChips(chips)
-                }));
+        const betsWithValue = Object.entries(get().currentBets)
+            .filter(([, chips]) => sumChips(chips) > 0)
+            .map(([hand, chips]) => ({
+                hand: hand as Hand,
+                amount: sumChips(chips)
+            }));
 
-            betsWithValue.forEach(({ hand, amount }) => {
-                if (hand === computerHand) {
-                    // If tie and only one bet - give back the bet
-                    if (betsWithValue.length === 1) {
-                        get().increaseBalance(amount);
-                    }
-                } else if (didPlayerWin(hand, computerHand)) {
-                    const winRate = betsWithValue.length === 1 ? WIN_RATE_1_POSITION : WIN_RATE_2_POSITIONS;
-                    get().increaseBalance(amount * winRate);
+        betsWithValue.forEach(({ hand, amount }) => {
+            if (hand === computerHand) {
+                if (betsWithValue.length === 1) {
+                    get().increaseBalance(amount);
                 }
-            });
+            } else if (didPlayerWin(hand, computerHand)) {
+                const winRate = betsWithValue.length === 1 ? WIN_RATE_1_POSITION : WIN_RATE_2_POSITIONS;
+                get().increaseBalance(amount * winRate);
+            }
+        });
 
-            return {
+        // Use setTimeout to transition to ROUND_ENDED after 2 seconds
+        setTimeout(() => {
+            set({
                 phase: PHASES.ROUND_ENDED,
                 currentBets: {
                     [HANDS.ROCK]: [],
@@ -80,9 +81,9 @@ export const useGameState = create<GameState>((set, get) => ({
                     [HANDS.SCISSORS]: []
                 },
                 computerHand: null
-            };
-        }),
-
+            });
+        }, 2000); // 2000 milliseconds = 2 seconds
+    },
     resetRound: () =>
         set(() => ({
             phase: PHASES.ROUND_STARTED,
