@@ -1,13 +1,17 @@
-import { START_BALANCE, WIN_RATE_1_POSITION, WIN_RATE_2_POSITIONS } from '@/utils/constants';
-import { showLoseMessage, showMaxBetsReachedMessage, showTieMessage, showWinMessage } from '@/utils/messages';
+import { START_BALANCE } from '@/utils/constants';
+import { showMaxBetsReachedMessage } from '@/utils/messages';
 import { create } from 'zustand';
 import { Hand, HANDS } from '../utils/types';
-import { didPlayerWin, getBetsWithValues, getRandomHand, Phase, PHASES, sumChips } from './gameState.utils';
+import { getBetsWithValues, getPlayerRoundResult, getRandomHand, Phase, PHASES, sumChips } from './gameState.utils';
+
+type CurrentBets = {
+    [key in Hand]: number[];
+};
 
 interface GameState {
     balance: number;
     winCount: number;
-    currentBets: { [key in Hand]: number[] };
+    currentBets: CurrentBets;
     phase: Phase;
     computerHand: Hand | null;
     playerHand: Hand | null;
@@ -23,8 +27,8 @@ interface GameState {
 
 const THINKING_TIME = 2000;
 const WAIT_UNTIL_RESET = 3000;
-
 const MAX_BETS = 2;
+
 export const useGameState = create<GameState>((set, get) => ({
     balance: 0,
     winCount: 0,
@@ -57,46 +61,28 @@ export const useGameState = create<GameState>((set, get) => ({
 
         // Use setTimeout to transition to ROUND_ENDED after 2 seconds
         setTimeout(() => {
-            const totalBets = Object.values(get().currentBets).reduce((sum, bet) => sum + sumChips(bet), 0);
-            if (totalBets === 0) return;
-
-            const betsWithValue = getBetsWithValues(get().currentBets);
             const computerHand = getRandomHand();
-            let playerHand = betsWithValue[0].hand;
 
-            let toastShown = false;
+            const playerRoundResult = getPlayerRoundResult(get().currentBets, computerHand);
 
-            betsWithValue.forEach(({ hand, amount }) => {
-                if (hand === computerHand) {
-                    playerHand = hand;
-                    if (betsWithValue.length === 1) {
-                        get().increaseBalance(amount);
-                        toastShown = true;
-                        showTieMessage(amount);
-                    }
-                } else if (didPlayerWin(hand, computerHand)) {
-                    const winRate = betsWithValue.length === 1 ? WIN_RATE_1_POSITION : WIN_RATE_2_POSITIONS;
-                    const winAmount = amount * winRate;
-                    get().increaseBalance(winAmount);
-                    playerHand = hand;
-                    toastShown = true;
-                    get().incrementWinCount();
-                    showWinMessage(winAmount);
-                }
-            });
+            if (playerRoundResult.playerWon) {
+                get().incrementWinCount();
+            }
 
-            if (!toastShown) {
-                showLoseMessage();
+            const playerHand = playerRoundResult.bestHand;
+
+            if (playerRoundResult.amount > 0) {
+                get().increaseBalance(playerRoundResult.amount);
             }
 
             set({
-                phase: PHASES.ROUND_ENDED,
+                phase: PHASES.ROUND_RESULTS,
                 computerHand,
                 playerHand
             });
 
             setTimeout(() => {
-                get().resetRound();
+                set({ phase: PHASES.ROUND_CASHED });
             }, WAIT_UNTIL_RESET);
         }, THINKING_TIME);
     },
