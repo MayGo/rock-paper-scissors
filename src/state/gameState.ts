@@ -1,4 +1,5 @@
 import { START_BALANCE, WIN_RATE_1_POSITION, WIN_RATE_2_POSITIONS } from '@/utils/constants';
+import { showLoseMessage, showTieMessage, showWinMessage } from '@/utils/messages';
 import { create } from 'zustand';
 import { Hand, HANDS } from '../utils/types';
 import { didPlayerWin, getRandomHand, Phase, PHASES, sumChips } from './gameState.utils';
@@ -47,32 +48,43 @@ export const useGameState = create<GameState>((set, get) => ({
     playRound: () => {
         set({ phase: PHASES.ROUND_THINKING }); // Set phase to ROUND_THINKING
 
-        const totalBets = Object.values(get().currentBets).reduce((sum, bet) => sum + sumChips(bet), 0);
-        if (totalBets === 0) return;
-
-        const computerHand = getRandomHand();
-        console.log('computerHand....', computerHand);
-
-        const betsWithValue = Object.entries(get().currentBets)
-            .filter(([, chips]) => sumChips(chips) > 0)
-            .map(([hand, chips]) => ({
-                hand: hand as Hand,
-                amount: sumChips(chips)
-            }));
-
-        betsWithValue.forEach(({ hand, amount }) => {
-            if (hand === computerHand) {
-                if (betsWithValue.length === 1) {
-                    get().increaseBalance(amount);
-                }
-            } else if (didPlayerWin(hand, computerHand)) {
-                const winRate = betsWithValue.length === 1 ? WIN_RATE_1_POSITION : WIN_RATE_2_POSITIONS;
-                get().increaseBalance(amount * winRate);
-            }
-        });
-
         // Use setTimeout to transition to ROUND_ENDED after 2 seconds
         setTimeout(() => {
+            const totalBets = Object.values(get().currentBets).reduce((sum, bet) => sum + sumChips(bet), 0);
+            if (totalBets === 0) return;
+
+            const computerHand = getRandomHand();
+            console.log('computerHand....', computerHand);
+
+            const betsWithValue = Object.entries(get().currentBets)
+                .filter(([, chips]) => sumChips(chips) > 0)
+                .map(([hand, chips]) => ({
+                    hand: hand as Hand,
+                    amount: sumChips(chips)
+                }));
+
+            let toastShown = false;
+
+            betsWithValue.forEach(({ hand, amount }) => {
+                if (hand === computerHand) {
+                    if (betsWithValue.length === 1) {
+                        get().increaseBalance(amount);
+                        toastShown = true;
+                        showTieMessage(amount);
+                    }
+                } else if (didPlayerWin(hand, computerHand)) {
+                    const winRate = betsWithValue.length === 1 ? WIN_RATE_1_POSITION : WIN_RATE_2_POSITIONS;
+                    const winAmount = amount * winRate;
+                    get().increaseBalance(winAmount);
+                    toastShown = true;
+                    showWinMessage(winAmount);
+                }
+            });
+
+            if (!toastShown) {
+                showLoseMessage();
+            }
+
             set({
                 phase: PHASES.ROUND_ENDED,
                 currentBets: {
