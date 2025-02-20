@@ -33,7 +33,7 @@ export function Game() {
         <Background>
             <Header />
             <VStack h="full" w="full">
-                <VStack flex={1} justifyContent="center">
+                <VStack flex={1} justifyContent="center" w="full">
                     {roundResults && <SelectedHands />}
                     {roundThinking && <ThinkingText />}
                     {roundCashed && <RoundCashed />}

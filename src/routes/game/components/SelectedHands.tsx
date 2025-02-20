@@ -11,7 +11,7 @@ export const SelectedHands = () => {
             <Text fontSize="6xl" fontWeight="bold" color="white" flex={1} textAlign="right">
                 {computerHand}
             </Text>
-            <Text fontSize="4xl" fontWeight="bold" color="primary" flex={0.5} textAlign="center">
+            <Text fontSize="4xl" fontWeight="bold" color="primary" textAlign="center">
                 VS
             </Text>
             <Text fontSize="6xl" fontWeight="bold" color="white" flex={1} textAlign="left">
