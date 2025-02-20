@@ -10,7 +10,6 @@ import { PlayButton } from './components/PlayButton';
 import { PositionsSelector } from './components/PositionsSelector';
 import { RoundCashed } from './components/RoundCashed';
 import { SelectedHands } from './components/SelectedHands';
-import { ThinkingText } from './components/ThinkingText';
 
 export function Game() {
     const phase = useGameState((state) => state.phase);
@@ -29,13 +28,14 @@ export function Game() {
         }
     }, [phase, startGame]);
 
+    const showSelectedHands = roundResults || roundThinking;
+
     return (
         <Background>
             <Header />
             <VStack h="full" w="full">
                 <VStack flex={1} justifyContent="center" w="full">
-                    {roundResults && <SelectedHands />}
-                    {roundThinking && <ThinkingText />}
+                    {showSelectedHands && <SelectedHands animating={roundThinking} />}
                     {roundCashed && <RoundCashed />}
                 </VStack>
                 <VStack gap={16} pb={14}>
