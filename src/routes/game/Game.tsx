@@ -1,6 +1,6 @@
-import { Header } from '@/components/game/Header';
-import { MainContent } from '@/components/game/MainContent';
-import { PickPositionButton } from '@/components/game/PickPositionButton';
+import { Header } from '@/routes/game/Header';
+import { MainContent } from '@/routes/game/MainContent';
+import { PickPositionButton } from '@/routes/game/PickPositionButton';
 import { useGameState } from '@/state/gameState';
 import { PHASES } from '@/state/gameState.utils';
 import { useTotalBets } from '@/state/useTotalBets';
@@ -12,6 +12,7 @@ export function Game() {
     const phase = useGameState((state) => state.phase);
     const startGame = useGameState((state) => state.startGame);
     const playRound = useGameState((state) => state.playRound);
+
     useEffect(() => {
         if (phase === PHASES.INITIAL) {
             startGame();

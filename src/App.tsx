@@ -1,5 +1,5 @@
-import { Game } from './components/game/Game';
+import { HomePage } from '@/routes';
 
 export function App() {
-    return <Game />;
+    return <HomePage />;
 }
