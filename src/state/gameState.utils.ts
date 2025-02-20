@@ -18,21 +18,24 @@ export const didPlayerWin = (playerHand?: Hand, computerHand?: Hand) => {
     if (playerHand === HANDS.ROCK && computerHand === HANDS.SCISSORS) return true;
     if (playerHand === HANDS.SCISSORS && computerHand === HANDS.PAPER) return true;
     if (playerHand === HANDS.PAPER && computerHand === HANDS.ROCK) return true;
+
     return false;
 };
 
 export const getWinningHand = (playerHand?: Hand, computerHand?: Hand) => {
-    if (!playerHand || !computerHand) return null;
-    if (playerHand === computerHand) return null;
+    if (!playerHand || !computerHand) return;
+    if (playerHand === computerHand) return;
     if (didPlayerWin(playerHand, computerHand)) return playerHand;
+
     return computerHand;
 };
 
 export const getPlayerWinningHand = (userHand?: Hand, computerHand?: Hand) => {
-    if (!userHand || !computerHand) return null;
-    if (userHand === computerHand) return null;
+    if (!userHand || !computerHand) return;
+    if (userHand === computerHand) return;
     if (didPlayerWin(userHand, computerHand)) return userHand;
-    return null;
+
+    return;
 };
 
 interface Bet {
@@ -62,6 +65,7 @@ export const getPlayerRoundResult = (currentBets: CurrentBets, computerHand: Han
     const betsWithValue = getBetsWithValues(currentBets);
 
     if (betsWithValue.length === 0) return { amount: 0, bestHand: undefined, playerWon: false };
+
     const result: PlayerRoundResult = {
         amount: 0,
         bestHand: undefined,
@@ -70,10 +74,11 @@ export const getPlayerRoundResult = (currentBets: CurrentBets, computerHand: Han
 
     betsWithValue.forEach(({ hand, amount }) => {
         if (hand === computerHand) {
-            if (result.bestHand === null) {
+            if (!result.bestHand) {
                 // If we already have winning hand
                 result.bestHand = hand;
             }
+
             if (betsWithValue.length === 1) {
                 result.amount = amount;
             }
@@ -87,7 +92,7 @@ export const getPlayerRoundResult = (currentBets: CurrentBets, computerHand: Han
         }
     });
 
-    if (result.bestHand === null) {
+    if (!result.bestHand) {
         result.bestHand = betsWithValue[0].hand;
     }
     return result;
