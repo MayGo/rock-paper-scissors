@@ -2,24 +2,24 @@ import { Box, HStack, IconButton, Text, VStack } from '@chakra-ui/react';
 
 import { CoinChip } from '@/components/ui/CoinChip';
 import { useGameState } from '@/state/gameState';
-import { sumChips } from '@/state/gameState.utils';
+import { getPlayerWinningHand, sumChips } from '@/state/gameState.utils';
 import { CHIP_VALUE } from '@/utils/constants';
 import { Hand } from '@/utils/types';
 import { Button } from '@chakra-ui/react';
 import { useState } from 'react';
 import { AiOutlineClear } from 'react-icons/ai';
 
-export const PickPositionButton = ({
-    label,
-    colorPalette,
-    hand,
-    disabled
-}: {
+interface Props {
     label: string;
-    colorPalette: string;
+    color: string;
     hand: Hand;
-    disabled: boolean;
-}) => {
+}
+
+export const PickPositionButton = ({ label, color, hand }: Props) => {
+    const playerHand = useGameState((state) => state.playerHand);
+    const computerHand = useGameState((state) => state.computerHand);
+    const winningHand = getPlayerWinningHand(playerHand, computerHand);
+
     const currentBet = useGameState((state) => state.currentBets[hand]);
     const addBet = useGameState((state) => state.addBet);
     const clearBet = useGameState((state) => state.clearBet);
@@ -28,11 +28,13 @@ export const PickPositionButton = ({
 
     const totalBet = sumChips(currentBet);
 
+    const highlight = winningHand === hand;
+
     return (
         <Button
-            bg={`${colorPalette}.950`}
-            borderColor={`${colorPalette}.500`}
-            color={`${colorPalette}.500`}
+            bg={`${color}.950`}
+            borderColor={`${color}.500`}
+            color={`${color}.500`}
             size="lg"
             w="220px"
             h="180px"
@@ -45,7 +47,7 @@ export const PickPositionButton = ({
             px={0}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            disabled={disabled}
+            border={highlight ? `4px solid` : `2px solid `}
         >
             {totalBet > 0 && isHovered && (
                 <IconButton
@@ -55,7 +57,7 @@ export const PickPositionButton = ({
                     size="sm"
                     aria-label="Clear bet"
                     variant="ghost"
-                    color={`${colorPalette}.500`}
+                    color={`${color}.500`}
                     onClick={(e) => {
                         e.stopPropagation();
                         clearBet(hand);

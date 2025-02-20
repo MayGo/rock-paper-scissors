@@ -20,7 +20,8 @@ export const getRandomHand = () => {
     return hands[Math.floor(Math.random() * hands.length)];
 };
 
-export const didPlayerWin = (userHand: Hand, computerHand: Hand) => {
+export const didPlayerWin = (userHand: Hand | null, computerHand: Hand | null) => {
+    if (!userHand || !computerHand) return false;
     if (userHand === computerHand) return false;
     if (userHand === HANDS.ROCK && computerHand === HANDS.SCISSORS) return true;
     if (userHand === HANDS.SCISSORS && computerHand === HANDS.PAPER) return true;
@@ -28,10 +29,18 @@ export const didPlayerWin = (userHand: Hand, computerHand: Hand) => {
     return false;
 };
 
-export const getWinningHand = (userHand: Hand, computerHand: Hand) => {
+export const getWinningHand = (userHand: Hand | null, computerHand: Hand | null) => {
+    if (!userHand || !computerHand) return null;
     if (userHand === computerHand) return null;
     if (didPlayerWin(userHand, computerHand)) return userHand;
     return computerHand;
+};
+
+export const getPlayerWinningHand = (userHand: Hand | null, computerHand: Hand | null) => {
+    if (!userHand || !computerHand) return null;
+    if (userHand === computerHand) return null;
+    if (didPlayerWin(userHand, computerHand)) return userHand;
+    return null;
 };
 
 interface Bet {

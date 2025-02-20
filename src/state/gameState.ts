@@ -105,6 +105,8 @@ export const useGameState = create<GameState>((set, get) => ({
         set((state) => {
             if (amount <= 0) return state;
 
+            if (state.phase !== PHASES.ROUND_STARTED) return state;
+
             const newBalance = state.balance - amount;
             if (newBalance < 0) return state;
 
