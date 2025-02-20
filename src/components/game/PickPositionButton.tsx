@@ -1,8 +1,30 @@
-import { Text, VStack } from '@chakra-ui/react';
+import { IconButton, Text, VStack } from '@chakra-ui/react';
 
+import { useGameState } from '@/state/gameState';
+import { sumChips } from '@/state/gameState.utils';
+import { CHIP_VALUE } from '@/utils/constants';
 import { Button } from '@chakra-ui/react';
+import { useState } from 'react';
+import { AiOutlineClear } from 'react-icons/ai';
+import { Hand } from '../../utils/types';
 
-export const PickPositionButton = ({ label, colorPalette }: { label: string; colorPalette: string }) => {
+export const PickPositionButton = ({
+    label,
+    colorPalette,
+    hand
+}: {
+    label: string;
+    colorPalette: string;
+    hand: Hand;
+}) => {
+    const currentBet = useGameState((state) => state.currentBets[hand]);
+    const addBet = useGameState((state) => state.addBet);
+    const clearBet = useGameState((state) => state.clearBet);
+
+    const [isHovered, setIsHovered] = useState(false);
+
+    const totalBet = sumChips(currentBet);
+
     return (
         <Button
             bg={`${colorPalette}.950`}
@@ -14,10 +36,32 @@ export const PickPositionButton = ({ label, colorPalette }: { label: string; col
             borderWidth={2}
             p={8}
             rounded="lg"
+            onClick={() => {
+                addBet(hand, CHIP_VALUE);
+            }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
         >
+            {totalBet > 0 && isHovered && (
+                <IconButton
+                    position="absolute"
+                    top={2}
+                    right={2}
+                    size="sm"
+                    aria-label="Clear bet"
+                    variant="ghost"
+                    color={`${colorPalette}.500`}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        clearBet(hand);
+                    }}
+                >
+                    <AiOutlineClear />
+                </IconButton>
+            )}
             <VStack alignItems="center" justifyContent="space-between" h="100%">
                 <Text fontSize="2xl" fontWeight="bold">
-                    {label}
+                    {totalBet}
                 </Text>
                 <Text fontSize="2xl" fontWeight="bold">
                     {label}

@@ -1,10 +1,10 @@
-import { HAND } from './game.constats';
+import { HANDS } from '../../utils/types';
 
 import { Flex, Text } from '@chakra-ui/react';
 
 export const SelectedHands = () => {
-    const computerHand = HAND.PAPER;
-    const playerHand = HAND.ROCK;
+    const computerHand = HANDS.PAPER;
+    const playerHand = HANDS.ROCK;
     return (
         <Flex gap={6} alignItems="center" justifyContent="center">
             <Text>Selected Hands</Text>
