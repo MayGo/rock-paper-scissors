@@ -1,5 +1,6 @@
-import { IconButton, Text, VStack } from '@chakra-ui/react';
+import { Box, HStack, IconButton, Text, VStack } from '@chakra-ui/react';
 
+import { CoinChip } from '@/components/ui/CoinChip';
 import { useGameState } from '@/state/gameState';
 import { sumChips } from '@/state/gameState.utils';
 import { CHIP_VALUE } from '@/utils/constants';
@@ -11,11 +12,13 @@ import { AiOutlineClear } from 'react-icons/ai';
 export const PickPositionButton = ({
     label,
     colorPalette,
-    hand
+    hand,
+    disabled
 }: {
     label: string;
     colorPalette: string;
     hand: Hand;
+    disabled: boolean;
 }) => {
     const currentBet = useGameState((state) => state.currentBets[hand]);
     const addBet = useGameState((state) => state.addBet);
@@ -34,13 +37,15 @@ export const PickPositionButton = ({
             w="220px"
             h="180px"
             borderWidth={2}
-            p={8}
             rounded="lg"
             onClick={() => {
                 addBet(hand, CHIP_VALUE);
             }}
+            py={8}
+            px={0}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            disabled={disabled}
         >
             {totalBet > 0 && isHovered && (
                 <IconButton
@@ -59,10 +64,14 @@ export const PickPositionButton = ({
                     <AiOutlineClear />
                 </IconButton>
             )}
-            <VStack alignItems="center" justifyContent="space-between" h="100%">
-                <Text fontSize="2xl" fontWeight="bold">
-                    {totalBet}
-                </Text>
+            <VStack gap={8} alignItems="center" justifyContent="space-between" h="full" w="full">
+                <HStack overflow="hidden" w="full" h="full" justifyContent="center" alignItems="center">
+                    {currentBet.map((bet) => (
+                        <Box key={bet} w="6px" justifyItems="center">
+                            <CoinChip value={bet} />
+                        </Box>
+                    ))}
+                </HStack>
                 <Text fontSize="2xl" fontWeight="bold">
                     {label}
                 </Text>

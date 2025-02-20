@@ -14,6 +14,8 @@ const blueDarkColor = '#201f4f';
 const redColor = '#ef4444';
 const redDarkColor = '#50091e';
 
+const chipBlue = '#235eff';
+
 const myConfig = defineConfig({
     globalCss: {
         html: {
@@ -35,6 +37,9 @@ const myConfig = defineConfig({
                 },
                 darkGray: {
                     value: darkGrayColor
+                },
+                chipBlue: {
+                    value: chipBlue
                 },
                 blue: {
                     '50': { value: '#eff6ff' },

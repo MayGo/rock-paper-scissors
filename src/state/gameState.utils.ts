@@ -24,3 +24,12 @@ export const didPlayerWin = (userHand: Hand, computerHand: Hand) => {
     if (userHand === HANDS.PAPER && computerHand === HANDS.ROCK) return true;
     return false;
 };
+
+export const getBetsWithValues = (bets: { [key in Hand]: number[] }) => {
+    return Object.entries(bets)
+        .filter(([, chips]) => sumChips(chips) > 0)
+        .map(([hand, chips]) => ({
+            hand: hand as Hand,
+            amount: sumChips(chips)
+        }));
+};

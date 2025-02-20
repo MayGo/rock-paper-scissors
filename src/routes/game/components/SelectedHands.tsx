@@ -1,10 +1,10 @@
-import { HANDS } from '@/utils/types';
+import { useGameState } from '@/state/gameState';
 
 import { Flex, Text } from '@chakra-ui/react';
 
 export const SelectedHands = () => {
-    const computerHand = HANDS.PAPER;
-    const playerHand = HANDS.ROCK;
+    const computerHand = useGameState((state) => state.computerHand);
+    const playerHand = useGameState((state) => state.playerHand);
 
     return (
         <Flex gap={10} alignItems="baseline" w="full">

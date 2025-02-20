@@ -5,7 +5,7 @@ import { HeaderItem } from './HeaderItem';
 
 export const Header = () => {
     const balance = useGameState((state) => state.balance);
-    const winAmount = useGameState((state) => state.winAmount);
+    const winAmount = useGameState((state) => state.winCount);
     const totalBets = useTotalBets();
 
     return (

@@ -22,3 +22,11 @@ export const showLoseMessage = () => {
         description: 'Better luck next round'
     });
 };
+
+export const showMaxBetsReachedMessage = () => {
+    toaster.create({
+        title: 'You can only have 2 bets at a time',
+        description: 'Please remove one of your bets before adding a new one',
+        type: 'warning'
+    });
+};

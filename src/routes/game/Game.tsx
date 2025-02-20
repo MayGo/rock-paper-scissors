@@ -13,7 +13,7 @@ import { ThinkingText } from './components/ThinkingText';
 export function Game() {
     const phase = useGameState((state) => state.phase);
     const startGame = useGameState((state) => state.startGame);
-    const resetRound = useGameState((state) => state.resetRound);
+
     const roundStarted = phase === PHASES.ROUND_STARTED;
     const roundThinking = phase === PHASES.ROUND_THINKING;
     const roundEnded = phase === PHASES.ROUND_ENDED;
@@ -23,15 +23,6 @@ export function Game() {
             startGame();
         }
     }, [phase, startGame]);
-
-    useEffect(() => {
-        if (roundEnded) {
-            const timer = setTimeout(() => {
-                resetRound();
-            }, 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [roundEnded, resetRound]);
 
     return (
         <Background>
