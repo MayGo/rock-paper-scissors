@@ -1,13 +1,9 @@
-import { START_BALANCE } from '@/utils/constants';
+import { MAX_BETS, START_BALANCE, THINKING_TIME, WAIT_UNTIL_RESET } from '@/utils/constants';
 import { showMaxBetsReachedMessage } from '@/utils/messages';
 import { create } from 'zustand';
 import { Hand, HANDS } from '../utils/types';
 import { GameState, Phase, PHASES } from './gameState.types';
 import { getBetsWithValues, getPlayerRoundResult, getRandomHand, sumChips } from './gameState.utils';
-
-const THINKING_TIME = 1000;
-const WAIT_UNTIL_RESET = 2000;
-const MAX_BETS = 2;
 
 export const useGameState = create<GameState>((set, get) => ({
     balance: 0,

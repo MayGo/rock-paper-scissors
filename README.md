@@ -22,6 +22,14 @@
     -   [x] Result comparison logic
     -   [x] Balance update system
     -   [x] Prevent invalid game states
+-   [x] Add animation for computer choice
+-   [ ] Add animation for balance update
+-   [ ] Add animation for win
+-   [ ] Add unit tests
+-   [ ] Add Cypress tests
+-   [ ] Make it playable on mobile
+-   [ ] Add sound effects
+-   [ ] Add background music
 
 ## React + TypeScript + Vite
 

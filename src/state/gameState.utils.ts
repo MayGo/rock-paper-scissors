@@ -43,7 +43,7 @@ interface Bet {
     amount: number;
 }
 
-export const getBetsWithValues = (bets: { [key in Hand]: number[] }) => {
+export const getBetsWithValues = (bets: CurrentBets) => {
     return Object.entries(bets)
         .filter(([, chips]) => sumChips(chips) > 0)
         .map(
