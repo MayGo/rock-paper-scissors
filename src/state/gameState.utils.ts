@@ -2,98 +2,71 @@ import { WIN_RATE_1_POSITION, WIN_RATE_2_POSITIONS } from '@/utils/constants';
 import { Hand, HANDS } from '@/utils/types';
 import { CurrentBets } from './gameState.types';
 
+// Cache hand values array
+const HANDS_VALUES = Object.values(HANDS);
+
 export const sumChips = (chips: number[]) => chips.reduce((acc, curr) => acc + curr, 0);
 
 export const getRandomHand = () => {
-    // Use crypto.getRandomValues() for better randomization
-    const hands = Object.values(HANDS);
     const array = new Uint32Array(1);
     crypto.getRandomValues(array);
-    return hands[array[0] % hands.length];
+    return HANDS_VALUES[array[0] % HANDS_VALUES.length];
 };
 
 export const didPlayerWin = (playerHand?: Hand, computerHand?: Hand) => {
-    if (!playerHand || !computerHand) return false;
-    if (playerHand === computerHand) return false;
-    if (playerHand === HANDS.ROCK && computerHand === HANDS.SCISSORS) return true;
-    if (playerHand === HANDS.SCISSORS && computerHand === HANDS.PAPER) return true;
-    if (playerHand === HANDS.PAPER && computerHand === HANDS.ROCK) return true;
+    if (!playerHand || !computerHand || playerHand === computerHand) return false;
 
-    return false;
+    // Use index-based calculation for win determination
+    const hands = [HANDS.ROCK, HANDS.PAPER, HANDS.SCISSORS];
+    const playerIndex = hands.indexOf(playerHand);
+    const computerIndex = hands.indexOf(computerHand);
+
+    return (playerIndex - computerIndex + 3) % 3 === 1;
 };
 
 export const getWinningHand = (playerHand?: Hand, computerHand?: Hand) => {
-    if (!playerHand || !computerHand) return;
-    if (playerHand === computerHand) return;
-    if (didPlayerWin(playerHand, computerHand)) return playerHand;
-
-    return computerHand;
+    if (!playerHand || !computerHand || playerHand === computerHand) return;
+    return didPlayerWin(playerHand, computerHand) ? playerHand : computerHand;
 };
 
-export const getPlayerWinningHand = (userHand?: Hand, computerHand?: Hand) => {
-    if (!userHand || !computerHand) return;
-    if (userHand === computerHand) return;
-    if (didPlayerWin(userHand, computerHand)) return userHand;
-
-    return;
-};
+export const getPlayerWinningHand = (userHand?: Hand, computerHand?: Hand) =>
+    didPlayerWin(userHand, computerHand) ? userHand : undefined;
 
 interface Bet {
     hand: Hand;
     amount: number;
 }
 
-export const getBetsWithValues = (bets: CurrentBets) => {
-    return Object.entries(bets)
-        .filter(([, chips]) => sumChips(chips) > 0)
-        .map(
-            ([hand, chips]) =>
-                ({
-                    hand: hand as Hand,
-                    amount: sumChips(chips)
-                } as Bet)
-        );
-};
-
-type PlayerRoundResult = {
-    amount: number;
-    bestHand?: Hand;
-    playerWon: boolean;
-};
+export const getBetsWithValues = (bets: CurrentBets) =>
+    Object.entries(bets).reduce((acc, [hand, chips]) => {
+        const sum = sumChips(chips);
+        return sum > 0 ? [...acc, { hand: hand as Hand, amount: sum }] : acc;
+    }, [] as Bet[]);
 
 export const getPlayerRoundResult = (currentBets: CurrentBets, computerHand: Hand) => {
     const betsWithValue = getBetsWithValues(currentBets);
+    if (!betsWithValue.length) return { amount: 0, bestHand: undefined, playerWon: false };
 
-    if (betsWithValue.length === 0) return { amount: 0, bestHand: undefined, playerWon: false };
+    let bestHand: Hand | undefined;
+    let amount = 0;
+    let playerWon = false;
 
-    const result: PlayerRoundResult = {
-        amount: 0,
-        bestHand: undefined,
-        playerWon: false
-    };
-
-    betsWithValue.forEach(({ hand, amount }) => {
+    for (const { hand, amount: betAmount } of betsWithValue) {
         if (hand === computerHand) {
-            if (!result.bestHand) {
-                // If we already have winning hand
-                result.bestHand = hand;
-            }
-
-            if (betsWithValue.length === 1) {
-                result.amount = amount;
-            }
+            bestHand ||= hand;
+            if (betsWithValue.length === 1) amount = betAmount;
         } else if (didPlayerWin(hand, computerHand)) {
             const winRate = betsWithValue.length === 1 ? WIN_RATE_1_POSITION : WIN_RATE_2_POSITIONS;
-            const winAmount = amount * winRate;
-
-            result.amount = winAmount;
-            result.bestHand = hand;
-            result.playerWon = true;
+            amount = betAmount * winRate;
+            bestHand = hand;
+            playerWon = true;
+            break; // Early exit when winning hand found
         }
-    });
-
-    if (!result.bestHand) {
-        result.bestHand = betsWithValue[0].hand;
     }
-    return result;
+
+    return {
+        amount,
+        bestHand: bestHand || betsWithValue[0].hand,
+        playerWon
+    };
 };
