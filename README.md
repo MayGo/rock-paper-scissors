@@ -29,9 +29,9 @@ Running on: https://rock-paper-scissors-d43zz6zsz-trimatech-projects.vercel.app/
 -   [z] Fix layout shift if values changes in header
 -   [x] Add animation for win
 -   [x] Add unit tests
--   [ ] Add Cypress tests
 -   [x] Make it playable on mobile
--   [ ] Check for rerenders
+-   [x] Check for rerenders
+-   [ ] Add Cypress tests
 -   [ ] Add sound effects
 -   [ ] Add background music
 -   [ ] Make it possible to add different value chips (premature refactoring?)
