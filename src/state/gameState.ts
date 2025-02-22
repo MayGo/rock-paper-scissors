@@ -3,7 +3,7 @@ import {
     MAX_BETS,
     START_BALANCE,
     THINKING_TIME,
-    WAIT_UNTIL_RESET
+    WAIT_UNTIL_CASCHED
 } from '@/utils/constants';
 import { showMaxBetsReachedMessage } from '@/utils/messages';
 import { create } from 'zustand';
@@ -79,7 +79,7 @@ export const useGameState = create<GameState>((set, get) => ({
                         }
                     });
                 }, CASHING_OUT_ANIMATION_DURATION);
-            }, WAIT_UNTIL_RESET);
+            }, WAIT_UNTIL_CASCHED);
         }, THINKING_TIME);
     },
     resetRound: () =>

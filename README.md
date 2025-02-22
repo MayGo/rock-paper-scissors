@@ -24,13 +24,14 @@
     -   [x] Prevent invalid game states
 -   [x] Add animation for computer choice
 -   [x] Add animation for balance update
--   [ ] Fix layout shift if values changes in header
+-   [z] Fix layout shift if values changes in header
 -   [x] Add animation for win
 -   [x] Add unit tests
 -   [ ] Add Cypress tests
--   [ ] Make it playable on mobile
+-   [x] Make it playable on mobile
 -   [ ] Add sound effects
 -   [ ] Add background music
+-   [ ] Make it possible to add different value chips (premature refactoring?)
 
 ## React + TypeScript + Vite
 
