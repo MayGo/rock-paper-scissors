@@ -41,15 +41,7 @@ export const useGameState = create<GameState>((set, get) => ({
 
             const playerRoundResult = getPlayerRoundResult(get().currentBets, computerHand);
 
-            if (playerRoundResult.playerWon) {
-                get().incrementWinCount();
-            }
-
             const playerHand = playerRoundResult.bestHand;
-
-            if (playerRoundResult.amount > 0) {
-                get().increaseBalance(playerRoundResult.amount);
-            }
 
             set({
                 phase: PHASES.ROUND_RESULTS,
@@ -59,6 +51,13 @@ export const useGameState = create<GameState>((set, get) => ({
 
             setTimeout(() => {
                 set({ phase: PHASES.ROUND_CASHED });
+                if (playerRoundResult.playerWon) {
+                    get().incrementWinCount();
+                }
+
+                if (playerRoundResult.amount > 0) {
+                    get().increaseBalance(playerRoundResult.amount);
+                }
             }, WAIT_UNTIL_RESET);
         }, THINKING_TIME);
     },

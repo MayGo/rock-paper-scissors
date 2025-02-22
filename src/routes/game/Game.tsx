@@ -33,6 +33,7 @@ export function Game() {
     return (
         <Background>
             <Header />
+
             <VStack h="full" w="full">
                 <VStack flex={1} justifyContent="center" w="full">
                     {showSelectedHands && <SelectedHands animating={roundThinking} />}

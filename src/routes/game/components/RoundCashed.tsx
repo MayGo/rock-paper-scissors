@@ -1,3 +1,4 @@
+import AnimatedCoinsGroup from '@/components/ui/AnimatedCoinsGroup';
 import { useGameState } from '@/state/gameState';
 import { getPlayerRoundResult, getWinningHand } from '@/state/gameState.utils';
 import { Text, VStack } from '@chakra-ui/react';
@@ -40,7 +41,12 @@ export const RoundCashed = () => {
             ) : (
                 <WinLabel label="TIE" color="white" />
             )}
-            {playerRoundResult.playerWon && <Winnings label="YOU WIN" amount={playerRoundResult.amount} />}
+            {playerRoundResult.playerWon && (
+                <>
+                    <Winnings label="YOU WIN" amount={playerRoundResult.amount} />
+                    <AnimatedCoinsGroup idFrom={`${playerHand}-bet`} idTo="balance" value={playerRoundResult.amount} />
+                </>
+            )}
             {tieWinnings && <Winnings label="GOT BACK" amount={playerRoundResult.amount} />}
         </VStack>
     );

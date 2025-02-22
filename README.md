@@ -25,8 +25,8 @@
 -   [x] Add animation for computer choice
 -   [x] Add animation for balance update
 -   [ ] Fix layout shift if values changes in header
--   [ ] Add animation for win
--   [ ] Add unit tests
+-   [x] Add animation for win
+-   [x] Add unit tests
 -   [ ] Add Cypress tests
 -   [ ] Make it playable on mobile
 -   [ ] Add sound effects

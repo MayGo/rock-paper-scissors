@@ -10,12 +10,13 @@ import { useState } from 'react';
 import { AiOutlineClear } from 'react-icons/ai';
 
 interface Props {
+    id: string;
     label: string;
     color: string;
     hand: Hand;
 }
 
-export const PickPositionButton = ({ label, color, hand }: Props) => {
+export const PickPositionButton = ({ id, label, color, hand }: Props) => {
     const playerHand = useGameState((state) => state.playerHand);
     const computerHand = useGameState((state) => state.computerHand);
     const winningHand = getPlayerWinningHand(playerHand, computerHand);
@@ -32,6 +33,7 @@ export const PickPositionButton = ({ label, color, hand }: Props) => {
 
     return (
         <Button
+            id={id}
             bg={`${color}.950`}
             borderWidth={highlight ? 4 : 2}
             borderColor={highlight ? `${color}.500` : `${color}.800`}
