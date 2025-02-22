@@ -2,7 +2,7 @@
 
 Running on: https://rock-paper-scissors-d43zz6zsz-trimatech-projects.vercel.app/
 
-![Rock Paper Scissors Game Screenshot](rock-paper-scissors-screenshot.png)
+![Rock Paper Scissors Game Screenshot](docs/rock-paper-scissors-screenshot.png)
 
 ## TODO
 
