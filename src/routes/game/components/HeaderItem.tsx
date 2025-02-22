@@ -26,7 +26,7 @@ export const HeaderItem = ({ id, label, value }: { id?: string; label: string; v
                 textAlign="left"
                 textWrap="nowrap"
             >
-                <AnimateNumber value={value} separator=" " duration={0.3} />
+                <AnimateNumber value={value} duration={0.3} />
             </Text>
         </Flex>
     );

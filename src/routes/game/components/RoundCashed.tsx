@@ -2,15 +2,16 @@ import { hugeFontSize, largeFontSize } from '@/components/theme/theme.utils';
 import AnimatedCoinsGroup from '@/components/ui/AnimatedCoinsGroup';
 import { useGameState } from '@/state/gameState';
 import { getWinningHand } from '@/state/gameState.utils';
-import { CASHING_OUT_ANIMATION_DURATION } from '@/utils/constants';
+import { CASHING_OUT_ANIMATION_DURATION, NUMBER_SEPARATOR } from '@/utils/constants';
+import { formatNumber } from '@/utils/numbers';
 import { Text, VStack } from '@chakra-ui/react';
 
 function Winnings({ label, amount }: { label: string; amount: number }) {
     return (
         <Text fontSize={largeFontSize} fontWeight="bold" color="primary" textAlign="center">
             {label}
-            <Text as="span" color="white" pl={2}>
-                {amount}
+            <Text as="span" color="white" pl={6}>
+                {formatNumber(amount, NUMBER_SEPARATOR)}
             </Text>
         </Text>
     );

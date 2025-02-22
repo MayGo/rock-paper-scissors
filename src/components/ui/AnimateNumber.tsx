@@ -1,6 +1,8 @@
+import { NUMBER_SEPARATOR } from '@/utils/constants';
+import { formatNumber } from '@/utils/numbers';
 import { chakra } from '@chakra-ui/react';
 import { animate, useInView, useMotionValue } from 'framer-motion';
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface Props {
     value: number;
@@ -9,24 +11,11 @@ interface Props {
     separator?: string;
 }
 
-export function AnimateNumber({ value, delay = 0, duration = 1, separator = '' }: Props) {
+export function AnimateNumber({ value, delay = 0, duration = 1, separator = NUMBER_SEPARATOR }: Props) {
     const ref = useRef<HTMLSpanElement>(null);
     const motionValue = useMotionValue(value);
     const isInView = useInView(ref, { once: true, margin: '0px' });
     const previousValueRef = useRef(value);
-
-    const formatNumber = useCallback(
-        (num: number) => {
-            const options: Intl.NumberFormatOptions = {
-                useGrouping: !!separator,
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            };
-            const formatted = Intl.NumberFormat('en-US', options).format(num);
-            return separator ? formatted.replace(/,/g, separator) : formatted;
-        },
-        [separator]
-    );
 
     useEffect(() => {
         const unsubscribe = motionValue.on('change', (latest: number) => {
@@ -35,12 +24,12 @@ export function AnimateNumber({ value, delay = 0, duration = 1, separator = '' }
                 const isIncreasing = previousValueRef.current > latest;
                 const color = isIncreasing ? 'var(--chakra-colors-green-300)' : 'var(--chakra-colors-red-300)';
 
-                ref.current.textContent = formatNumber(rounded);
+                ref.current.textContent = formatNumber(rounded, separator);
                 ref.current.style.color = rounded !== value ? color : '';
             }
         });
         return () => unsubscribe();
-    }, [motionValue, formatNumber, value]);
+    }, [motionValue, separator, value]);
 
     useEffect(() => {
         if (isInView) {
@@ -55,9 +44,9 @@ export function AnimateNumber({ value, delay = 0, duration = 1, separator = '' }
     // Set initial value
     useEffect(() => {
         if (!isInView && ref.current) {
-            ref.current.textContent = formatNumber(value);
+            ref.current.textContent = formatNumber(value, separator);
         }
-    }, [isInView, formatNumber, value]);
+    }, [isInView, separator, value]);
 
     return <chakra.span ref={ref} />;
 }
