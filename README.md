@@ -23,7 +23,8 @@
     -   [x] Balance update system
     -   [x] Prevent invalid game states
 -   [x] Add animation for computer choice
--   [ ] Add animation for balance update
+-   [x] Add animation for balance update
+-   [ ] Fix layout shift if values changes in header
 -   [ ] Add animation for win
 -   [ ] Add unit tests
 -   [ ] Add Cypress tests
