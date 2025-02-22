@@ -31,6 +31,7 @@ const stateFunctions = {
     startGame: expect.any(Function),
     playRound: expect.any(Function)
 };
+
 const BET_AMOUNT = CHIP_VALUE;
 
 describe('Game State Management', () => {

@@ -29,6 +29,7 @@
 -   [x] Add unit tests
 -   [ ] Add Cypress tests
 -   [x] Make it playable on mobile
+-   [ ] Check for rerenders
 -   [ ] Add sound effects
 -   [ ] Add background music
 -   [ ] Make it possible to add different value chips (premature refactoring?)
