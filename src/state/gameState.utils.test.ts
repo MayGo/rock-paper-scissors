@@ -1,13 +1,13 @@
 import { WIN_RATE_1_POSITION, WIN_RATE_2_POSITIONS } from '@/utils/constants';
 import { Hand, HANDS } from '@/utils/types';
 import { describe, expect, test } from 'vitest';
+import { getRandomHand } from './gameState.randomizer';
 import type { CurrentBets } from './gameState.types';
 import {
     didPlayerWin,
     getBetsWithValues,
     getPlayerRoundResult,
     getPlayerWinningHand,
-    getRandomHand,
     getWinningHand,
     sumChips
 } from './gameState.utils';

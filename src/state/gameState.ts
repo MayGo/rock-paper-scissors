@@ -8,8 +8,9 @@ import {
 import { showMaxBetsReachedMessage } from '@/utils/messages';
 import { create } from 'zustand';
 import { Hand, HANDS } from '../utils/types';
+import { getRandomHand } from './gameState.randomizer';
 import { GameState, Phase, PHASES, RoundResult } from './gameState.types';
-import { getBetsWithValues, getPlayerRoundResult, getRandomHand, sumChips } from './gameState.utils';
+import { getBetsWithValues, getPlayerRoundResult, sumChips } from './gameState.utils';
 
 export const useGameState = create<GameState>((set, get) => ({
     balance: 0,

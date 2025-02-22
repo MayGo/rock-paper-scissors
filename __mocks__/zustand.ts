@@ -1,10 +1,7 @@
-// __mocks__/zustand.ts
 import { act } from '@testing-library/react';
 import { afterEach, vi } from 'vitest';
 import type * as ZustandExportedTypes from 'zustand';
 export * from 'zustand';
-
-console.log('zustand mock............');
 
 const { create: actualCreate, createStore: actualCreateStore } = await vi.importActual<typeof ZustandExportedTypes>(
     'zustand'
