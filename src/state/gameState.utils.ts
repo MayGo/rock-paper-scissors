@@ -1,6 +1,6 @@
 import { WIN_RATE_1_POSITION, WIN_RATE_2_POSITIONS } from '@/utils/constants';
 import { Hand, HANDS } from '@/utils/types';
-import { CurrentBets } from './gameState.types';
+import { CurrentBets, RoundResult } from './gameState.types';
 
 // Cache hand values array
 const HANDS_VALUES = Object.values(HANDS);
@@ -45,7 +45,7 @@ export const getBetsWithValues = (bets: CurrentBets) =>
 
 export const getPlayerRoundResult = (currentBets: CurrentBets, computerHand: Hand) => {
     const betsWithValue = getBetsWithValues(currentBets);
-    if (!betsWithValue.length) return { amount: 0, bestHand: undefined, playerWon: false };
+    if (!betsWithValue.length) return { amount: 0, bestHand: undefined, playerWon: false } as RoundResult;
 
     let bestHand: Hand | undefined;
     let amount = 0;
@@ -68,5 +68,5 @@ export const getPlayerRoundResult = (currentBets: CurrentBets, computerHand: Han
         amount,
         bestHand: bestHand || betsWithValue[0].hand,
         playerWon
-    };
+    } as RoundResult;
 };

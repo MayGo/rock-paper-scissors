@@ -15,6 +15,12 @@ export type CurrentBets = {
     [key in Hand]: number[];
 };
 
+export type RoundResult = {
+    amount: number;
+    bestHand?: Hand;
+    playerWon: boolean;
+};
+
 export interface GameState {
     balance: number;
     winCount: number;
@@ -22,6 +28,7 @@ export interface GameState {
     phase: Phase;
     computerHand?: Hand;
     playerHand?: Hand;
+    roundResult?: RoundResult;
     startGame: () => void;
     playRound: () => void;
     resetRound: () => void;

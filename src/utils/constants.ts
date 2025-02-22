@@ -5,4 +5,5 @@ export const WIN_RATE_2_POSITIONS = 3;
 
 export const THINKING_TIME = 1000;
 export const WAIT_UNTIL_RESET = 1000;
+export const CASHING_OUT_ANIMATION_DURATION = 0.5 * 1000;
 export const MAX_BETS = 2;

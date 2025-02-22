@@ -1,8 +1,14 @@
-import { MAX_BETS, START_BALANCE, THINKING_TIME, WAIT_UNTIL_RESET } from '@/utils/constants';
+import {
+    CASHING_OUT_ANIMATION_DURATION,
+    MAX_BETS,
+    START_BALANCE,
+    THINKING_TIME,
+    WAIT_UNTIL_RESET
+} from '@/utils/constants';
 import { showMaxBetsReachedMessage } from '@/utils/messages';
 import { create } from 'zustand';
 import { Hand, HANDS } from '../utils/types';
-import { GameState, Phase, PHASES } from './gameState.types';
+import { GameState, Phase, PHASES, RoundResult } from './gameState.types';
 import { getBetsWithValues, getPlayerRoundResult, getRandomHand, sumChips } from './gameState.utils';
 
 export const useGameState = create<GameState>((set, get) => ({
@@ -19,6 +25,7 @@ export const useGameState = create<GameState>((set, get) => ({
     phase: PHASES.INITIAL as Phase,
     computerHand: undefined,
     playerHand: undefined,
+    roundResult: undefined as RoundResult | undefined,
     startGame: () =>
         set({
             balance: START_BALANCE,
@@ -46,11 +53,15 @@ export const useGameState = create<GameState>((set, get) => ({
             set({
                 phase: PHASES.ROUND_RESULTS,
                 computerHand,
-                playerHand
+                playerHand,
+                roundResult: playerRoundResult
             });
 
             setTimeout(() => {
-                set({ phase: PHASES.ROUND_CASHED });
+                set({
+                    phase: PHASES.ROUND_CASHED
+                });
+
                 if (playerRoundResult.playerWon) {
                     get().incrementWinCount();
                 }
@@ -58,6 +69,16 @@ export const useGameState = create<GameState>((set, get) => ({
                 if (playerRoundResult.amount > 0) {
                     get().increaseBalance(playerRoundResult.amount);
                 }
+
+                setTimeout(() => {
+                    set({
+                        currentBets: {
+                            [HANDS.ROCK]: [],
+                            [HANDS.PAPER]: [],
+                            [HANDS.SCISSORS]: []
+                        }
+                    });
+                }, CASHING_OUT_ANIMATION_DURATION);
             }, WAIT_UNTIL_RESET);
         }, THINKING_TIME);
     },
@@ -70,7 +91,8 @@ export const useGameState = create<GameState>((set, get) => ({
                 [HANDS.ROCK]: [],
                 [HANDS.PAPER]: [],
                 [HANDS.SCISSORS]: []
-            }
+            },
+            roundResult: undefined
         })),
     increaseBalance: (by: number) => set((state) => ({ balance: state.balance + by })),
     decreaseBalance: (by: number) => set((state) => ({ balance: state.balance - by })),
