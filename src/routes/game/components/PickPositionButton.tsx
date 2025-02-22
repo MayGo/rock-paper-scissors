@@ -45,7 +45,7 @@ export const PickPositionButton = ({ id, label, color, hand }: Props) => {
             onClick={() => {
                 addBet(hand, CHIP_VALUE);
             }}
-            py={[1, 5, 6]}
+            py={[1, 1, 6]}
             px={0}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -68,7 +68,7 @@ export const PickPositionButton = ({ id, label, color, hand }: Props) => {
                     <AiOutlineClear />
                 </IconButton>
             )}
-            <VStack gap={[1, 2, 4]} alignItems="center" justifyContent="space-between" h="full" w="full">
+            <VStack gap={[1, 1, 4]} alignItems="center" justifyContent="space-between" h="full" w="full">
                 <HStack overflow="hidden" w="full" h="full" justifyContent="center" alignItems="center">
                     {currentBet.map((bet, index) => (
                         <Box key={index} w="6px" justifyItems="center">
