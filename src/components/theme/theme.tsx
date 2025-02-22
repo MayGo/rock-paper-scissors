@@ -83,8 +83,8 @@ const myConfig = defineConfig({
                 }
             },
             fonts: {
-                body: { value: 'var(--font-geist-sans), sans-serif' },
-                heading: { value: 'var(--font-mplus), sans-serif' }
+                body: { value: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' },
+                heading: { value: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }
             }
         }
     }

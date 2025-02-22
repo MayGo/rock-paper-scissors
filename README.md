@@ -1,5 +1,7 @@
 # Game
 
+Running on: https://rock-paper-scissors-d43zz6zsz-trimatech-projects.vercel.app/
+
 ## TODO
 
 -   [x] Set up React + TypeScript + Vite project
