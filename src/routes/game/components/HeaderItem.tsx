@@ -3,7 +3,7 @@ import { Text } from '@chakra-ui/react';
 
 export const HeaderItem = ({ id, label, value }: { id?: string; label: string; value: number }) => {
     return (
-        <Text fontSize="xl" fontWeight="bold">
+        <Text fontSize="xl" fontWeight="bold" px={4}>
             <Text as="span" color="primary" pr={2}>
                 {label}:
             </Text>

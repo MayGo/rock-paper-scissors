@@ -1,3 +1,4 @@
+import { hugeFontSize, largeFontSize } from '@/components/theme/theme.utils';
 import AnimatedCoinsGroup from '@/components/ui/AnimatedCoinsGroup';
 import { useGameState } from '@/state/gameState';
 import { getWinningHand } from '@/state/gameState.utils';
@@ -6,7 +7,7 @@ import { Text, VStack } from '@chakra-ui/react';
 
 function Winnings({ label, amount }: { label: string; amount: number }) {
     return (
-        <Text fontSize="4xl" fontWeight="bold" color="primary" textAlign="center">
+        <Text fontSize={largeFontSize} fontWeight="bold" color="primary" textAlign="center">
             {label}
             <Text as="span" color="white" pl={2}>
                 {amount}
@@ -17,7 +18,7 @@ function Winnings({ label, amount }: { label: string; amount: number }) {
 
 function WinLabel({ label, color }: { label: string; color: string }) {
     return (
-        <Text fontSize="6xl" fontWeight="bold" color={color} textAlign="center">
+        <Text fontSize={hugeFontSize} fontWeight="bold" color={color} textAlign="center">
             {label}
         </Text>
     );

@@ -1,5 +1,6 @@
 import { Box, HStack, IconButton, Text, VStack } from '@chakra-ui/react';
 
+import { mediumFontSize } from '@/components/theme/theme.utils';
 import { CoinChip } from '@/components/ui/CoinChip';
 import { useGameState } from '@/state/gameState';
 import { getPlayerWinningHand, sumChips } from '@/state/gameState.utils';
@@ -38,13 +39,13 @@ export const PickPositionButton = ({ id, label, color, hand }: Props) => {
             borderWidth={highlight ? 4 : 2}
             borderColor={highlight ? `${color}.500` : `${color}.800`}
             color={`${color}.500`}
-            w="200px"
-            h="160px"
+            w={['110px', '150px', '200px']}
+            h={['90px', '110px', '160px']}
             rounded="lg"
             onClick={() => {
                 addBet(hand, CHIP_VALUE);
             }}
-            py={6}
+            py={[1, 5, 6]}
             px={0}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -67,7 +68,7 @@ export const PickPositionButton = ({ id, label, color, hand }: Props) => {
                     <AiOutlineClear />
                 </IconButton>
             )}
-            <VStack gap={4} alignItems="center" justifyContent="space-between" h="full" w="full">
+            <VStack gap={[1, 2, 4]} alignItems="center" justifyContent="space-between" h="full" w="full">
                 <HStack overflow="hidden" w="full" h="full" justifyContent="center" alignItems="center">
                     {currentBet.map((bet, index) => (
                         <Box key={index} w="6px" justifyItems="center">
@@ -75,7 +76,7 @@ export const PickPositionButton = ({ id, label, color, hand }: Props) => {
                         </Box>
                     ))}
                 </HStack>
-                <Text fontSize="2xl" fontWeight="bold">
+                <Text fontSize={mediumFontSize} fontWeight="bold">
                     {label}
                 </Text>
             </VStack>

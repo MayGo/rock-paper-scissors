@@ -39,7 +39,7 @@ export function Game() {
                     {showSelectedHands && <SelectedHands animating={roundThinking} />}
                     {roundCashed && <RoundCashed />}
                 </VStack>
-                <VStack gap={16} pb={14}>
+                <VStack gap={[4, 10, 16]} pb={14}>
                     <VStack gap={2}>
                         {roundStarted && <PickPositionsText />}
                         <PositionsSelector />

@@ -1,6 +1,6 @@
-import { Text } from '@chakra-ui/react';
 import { motion, useAnimationControls } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { HandText } from './HandText';
 
 export const ScrollingText = ({ values, align = 'right' }: { values: string[]; align?: 'left' | 'right' }) => {
     const controls = useAnimationControls();
@@ -26,9 +26,7 @@ export const ScrollingText = ({ values, align = 'right' }: { values: string[]; a
 
     return (
         <motion.div animate={controls} style={{ width: '100%', textAlign: align }}>
-            <Text fontSize="6xl" fontWeight="bold" color="white">
-                {values[currentIndex]}
-            </Text>
+            <HandText align={align}>{values[currentIndex]}</HandText>
         </motion.div>
     );
 };

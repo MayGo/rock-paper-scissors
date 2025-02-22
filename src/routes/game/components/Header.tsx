@@ -9,7 +9,16 @@ export const Header = () => {
     const totalBets = useTotalBets();
 
     return (
-        <Flex gap={14} alignItems="center" justifyContent="center" bg="darkGray" color="white" py={1} w="full">
+        <Flex
+            direction={['column', 'row']}
+            gap={1}
+            alignItems="center"
+            justifyContent="center"
+            bg="darkGray"
+            color="white"
+            py={1}
+            w="full"
+        >
             <HeaderItem id="balance" label="BALANCE" value={balance} />
             <HeaderItem label="BET" value={totalBets} />
             <HeaderItem label="WIN" value={winAmount} />
