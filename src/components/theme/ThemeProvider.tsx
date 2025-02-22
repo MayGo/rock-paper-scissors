@@ -1,5 +1,3 @@
-'use client';
-
 import { ChakraProvider } from '@chakra-ui/react';
 import { type ThemeProviderProps } from 'next-themes';
 import { useEffect, useState } from 'react';
